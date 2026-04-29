@@ -1,6 +1,6 @@
 # srefix-diagnosis
 
-🌐 **Website**: [aisrefix-commits.github.io/srefixweb](https://aisrefix-commits.github.io/srefixweb/) — landing page with overview, agent library, architecture, and quick start (zh / en / ja / ko / es).
+🌐 **Website**: [srefix.com](https://srefix.com) — landing page with overview, agent library, architecture, and quick start (zh / en / ja / ko / es).
 
 Diagnosis-only knowledge stack delivered as MCP servers, plus telemetry / inventory MCPs that let an LLM run a full diagnose-with-evidence loop.
 
