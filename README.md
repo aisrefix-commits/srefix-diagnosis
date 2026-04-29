@@ -1,10 +1,18 @@
 # srefix-diagnosis
 
-🌐 **Website**: [srefix.com](https://srefix.com) — landing page with overview, agent library, architecture, and quick start (zh / en / ja / ko / es).
+[![GitHub stars](https://img.shields.io/github/stars/aisrefix-commits/srefix-diagnosis?style=social)](https://github.com/aisrefix-commits/srefix-diagnosis/stargazers)
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+[![Agents](https://img.shields.io/badge/agents-256-8a4dff.svg)](agents/)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB.svg)](https://www.python.org/)
+[![Works with Claude Code](https://img.shields.io/badge/works%20with-Claude%20Code-D97757.svg)](https://claude.ai/code)
 
-Diagnosis-only knowledge stack delivered as MCP servers, plus telemetry / inventory MCPs that let an LLM run a full diagnose-with-evidence loop.
+> **Diagnose any tech stack with Claude.** 256 specialized SRE agents for Postgres, Kafka, Kubernetes, Istio, … — local, MCP-based, Apache 2.0 licensed.
 
-![Claude diagnosing an Nginx 502 incident via srefix-diagnosis MCPs](./demo/demo.gif)
+[![Claude diagnosing an Nginx 502 incident via srefix-diagnosis MCPs](./demo/demo.gif)](https://srefix.com)
+
+**🌐 [Live · srefix.com](https://srefix.com)** &nbsp;·&nbsp; **⚡ [Quick Start](#install)** &nbsp;·&nbsp; **🏗️ [Architecture](#architecture)**
+
+---
 
 > **30-second demo**: Claude (headless) diagnoses an Nginx 502 incident by orchestrating
 > 5 MCPs — `diag-nginx` (manual lookup), `srefix-explorer` (fallback plan),
