@@ -10,7 +10,7 @@
 
 [![Claude diagnosing an Nginx 502 incident via srefix-diagnosis MCPs](./demo/demo.gif)](https://srefix.com)
 
-**🌐 [Live · srefix.com](https://srefix.com)** &nbsp;·&nbsp; **⚡ [Quick Start](#install)** &nbsp;·&nbsp; **🏗️ [Architecture](#architecture)**
+**🌐 [Live · srefix.com](https://srefix.com)** &nbsp;·&nbsp; **⚡ [Quick Start](#quick-start)** &nbsp;·&nbsp; **🏗️ [Architecture](#architecture)**
 
 ---
 
@@ -423,7 +423,7 @@ can self-check a manual before trusting it during diagnosis:
 Tools: `verify_manual`, `audit_corpus`, `list_whitelisted_techs`,
 `whitelist_info`.
 
-## Install
+## Quick Start
 
 ### 1. The 250 diagnosis MCPs (`mcp/`)
 
