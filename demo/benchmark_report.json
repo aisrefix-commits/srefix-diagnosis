@@ -4,7 +4,7 @@
     "name": "Nginx 502 Bad Gateway - Upstream Timeout",
     "difficulty": "Basic",
     "passed": true,
-    "duration_s": 60.9,
+    "duration_s": 57.2,
     "exit_code": 0,
     "expected_keywords": [
       "upstream",
@@ -20,37 +20,39 @@
     ],
     "keyword_score": 1.0,
     "min_confidence": 0.8,
-    "output_preview": "## Root Cause: Backend-API Rolling Deployment Caused Upstream Health Check Cascade\n\n### Investigation summary\n\n**Alert:** `Nginx 502 error rate critical` \u2014 25% on `upstream=backend-api`\n\n**Telemetry evidence:**\n- 5xx rate on `backend-api` upstream jumped **0.05/s \u2192 25.3/s** at a single timestamp (t=300s) \u2014 a step function, not a ramp. Classic signature of all upstream peers being marked down at once, not gradual saturation.\n- `nginx_upstream_up{upstream=\"backend-api\"}` = 1 on `nginx-frontend-1` and `nginx-frontend-2` \u2014 **nginx itself is healthy**; the failure is downstream.\n\n**Scenario timelin"
+    "output_preview": "## Root Cause\n\n**A backend-api deployment rollout with slow pod startup caused the upstream pool to fail nginx health checks, producing 25% 502s for ~8 minutes.**\n\n### Evidence\n\n**Alert** (`prom_alerts`): `Nginx 502 error rate critical` firing at 25.0% for `upstream=\"backend-api\"` (threshold 5%).\n\n**Spike profile** (`prom_range_query` on `nginx_upstream_responses_total`):\n- Steady 0.05 req/s baseline \u2192 jumps to **25.3 req/s at t=300s** (506\u00d7 spike).\n- Sustained at 25.3 \u2014 not transient packet loss; consistent with a population of upstream pods unable to serve.\n\n**Topology** (`discovery_list_hos"
   },
   {
     "id": "mongodb-replicaset-election-001",
     "name": "MongoDB Replica Set Election Storm",
     "difficulty": "Advanced",
     "passed": true,
-    "duration_s": 107.0,
+    "duration_s": 44.2,
     "exit_code": 0,
     "expected_keywords": [
       "election",
       "primary",
       "replica",
-      "stepdown"
+      "stepdown",
+      "rollback",
+      "secondary"
     ],
     "matched_keywords": [
       "election",
       "primary",
       "replica",
-      "stepdown"
+      "secondary"
     ],
-    "keyword_score": 1.0,
-    "min_confidence": 0.7,
-    "output_preview": "## Diagnosis: MongoDB `rs0` on `user-db-prod` \u2014 Election Storm\n\n### Observed signals\n\n| Signal | Value | Source |\n|---|---|---|\n| Firing alert | `MongoDB replica set election triggered`, severity=critical, value=5 | `prom_alerts` |\n| Election count | `mongodb_rs_election_count{rs=\"rs0\"}` jumped `0 \u2192 5` at t\u2248150s, then held at 5 (\u22485 elections in ~2 min) | `prom_range_query` |\n| Member states | `user-db-prod-1: PRIMARY (1)`, `user-db-prod-2: STEPPED_DOWN (9 / ROLLBACK)`, `user-db-prod-3: SECONDARY (2)` | `prom_instant` mongodb_rs_member_state |\n| Topology | 3-node RS `rs0`, hosts `user-db-prod-{"
+    "keyword_score": 0.667,
+    "min_confidence": 0.5,
+    "output_preview": "## Diagnosis: MongoDB Replica Set Election Storm \u2014 `user-db-prod` / `rs0`\n\n### Root cause\n**Network flap caused the prior primary to lose majority quorum**, triggering a cascade of elections. From the scenario timeline:\n- t=0: network flap \u2192 primary loses majority\n- t=1m: multiple elections triggered\n- t=5m: app write errors spike (no primary accepting writes)\n- t=12m: network recovers, stable primary elected\n\n### Current state\n| Member | State |\n|---|---|\n| user-db-prod-1:27017 | **PRIMARY** |\n| user-db-prod-2:27017 | STEPPED_DOWN |\n| user-db-prod-3:27017 | SECONDARY |\n\nElection counter stepp"
   },
   {
     "id": "etcd-disk-latency-001",
     "name": "etcd Disk I/O Latency Degrading Kubernetes",
     "difficulty": "Advanced",
     "passed": true,
-    "duration_s": 104.3,
+    "duration_s": 36.0,
     "exit_code": 0,
     "expected_keywords": [
       "etcd",
@@ -68,37 +70,39 @@
     ],
     "keyword_score": 1.0,
     "min_confidence": 0.7,
-    "output_preview": "## Verdict: Yes \u2014 K8s control plane is broken **because of etcd**, and etcd is broken because of **disk I/O**.\n\n### The cascade (confirmed by diag-etcd \u00a712 + diag-k8s thresholds)\n\n```\nslow disk on etcd node\n  \u2192 WAL fsync p99 = 800ms          (8\u00d7 past CRITICAL threshold of 100ms)\n  \u2192 every Raft proposal blocks on fsync before commit\n  \u2192 kube-apiserver writes wait on etcd commit\n  \u2192 apiserver request latency ~12s, 503 bursts likely\n```\n\nPer `diag-k8s \u2192 etcd` thresholds: `WAL fsync p99 > 100ms` is the documented warning that \"disk too slow for WAL\" \u2014 at **800ms** you are deep into the failure mod"
+    "output_preview": "## Root Cause: Noisy-neighbor disk I/O contention on the etcd nodes\n\n**Causal chain (etcd \u2192 K8s, not K8s broken on its own):**\n\n1. `expand_to_dependents(etcd)` confirms K8s is a **critical** dependent of etcd (\"K8s control plane state\"). When etcd writes stall, the apiserver stalls \u2014 this is expected blast radius, not a separate K8s bug.\n2. Scenario `etcd-disk-latency-001` timeline: noisy-neighbor VM (t=0) \u2192 etcd WAL slows (t=2m) \u2192 K8s control plane unresponsive (t=5m). The 60s `delay_secs` on the apiserver alert matches this lag.\n3. Telemetry: `etcd_disk_wal_fsync_duration_seconds` p99 spikes"
   },
   {
     "id": "dns-resolution-failure-001",
     "name": "CoreDNS Failure - Cluster-wide DNS Outage",
     "difficulty": "Advanced",
     "passed": true,
-    "duration_s": 97.4,
+    "duration_s": 90.9,
     "exit_code": 0,
     "expected_keywords": [
       "dns",
       "coredns",
       "resolution",
-      "servfail"
+      "servfail",
+      "lookup"
     ],
     "matched_keywords": [
       "dns",
       "coredns",
       "resolution",
-      "servfail"
+      "servfail",
+      "lookup"
     ],
     "keyword_score": 1.0,
     "min_confidence": 0.8,
-    "output_preview": "## Diagnosis: CoreDNS cluster-wide DNS outage\n\n**Root cause (most likely):** A bad CoreDNS `Corefile` ConfigMap update \u2014 syntax/plugin error caused all CoreDNS replicas to crash-loop or load a broken config, so every query returns SERVFAIL.\n\n### Evidence\n\n| Signal | Value | Source |\n|---|---|---|\n| Firing alert | `CoreDNS resolution failures` \u2014 SERVFAIL rate > 50%, severity critical | `prom_alerts` |\n| SERVFAIL rate | 0/s \u2192 **142/s** at t\u2248180s, sustained | `rate(coredns_dns_responses_total{rcode=\"SERVFAIL\"}[5m])` |\n| Total response rate | 0/s \u2192 **142/s** (matches SERVFAIL exactly \u2192 **100% of r"
+    "output_preview": "## CoreDNS SERVFAIL Diagnosis\n\n**Active scenario:** `dns-resolution-failure-001` \u2014 Cluster-wide DNS Outage.\n\n### What the telemetry shows\n- **Firing alert:** `CoreDNS resolution failures` (severity=critical, rcode=SERVFAIL, value 50/s vs threshold 5).\n- **Metric trend** (`rate(coredns_dns_responses_total{rcode=\"SERVFAIL\"}[5m])`): flat 0/s for the first 3 minutes, then a step-jump to **142/s at t\u2248180s** and held there \u2014 classic configuration-induced failure, not a gradual upstream degradation.\n- **Hosts impacted:** all three CoreDNS pods (`coredns`, `coredns-2`, `coredns-3`) \u2014 cluster-wide, not"
   },
   {
     "id": "cassandra-gc-pause-001",
     "name": "Cassandra GC Pause Storm",
     "difficulty": "Intermediate",
     "passed": true,
-    "duration_s": 98.6,
+    "duration_s": 100.0,
     "exit_code": 0,
     "expected_keywords": [
       "gc",
@@ -115,6 +119,6 @@
     ],
     "keyword_score": 0.8,
     "min_confidence": 0.6,
-    "output_preview": "# Diagnosis: cassandra-03 GC Pause Storm\n\n## Confirmed signal (telemetry)\n- **Firing alert:** `Cassandra GC pause exceeds threshold` \u2014 severity `critical`, value `8.5s` on `cassandra-03:9042` (scenario `cassandra-gc-pause-001`).\n- 8.5s blows past every threshold in the runbook: `>500ms = WARNING`, `>2s = CRITICAL` (peers will mark the node DOWN via gossip).\n- Mock telemetry exposes only the alert for this scenario \u2014 no Prom series, Loki streams, or jumphost preset output were canned in. So the per-node heap/GC-cause data must be gathered from the live cluster following the runbook commands bel"
+    "output_preview": "## Diagnosis \u2014 `cassandra-gc-pause-001`\n\n### Evidence gathered\n\n**Prometheus \u2014 `jvm_gc_pause_seconds{instance=\"cassandra-03:9042\", gc=\"G1 Old Generation\"}`**\n| time slice | value |\n|---|---|\n| t\u201110m \u2192 t\u20115m | 0.05 s (baseline) |\n| t\u20115m \u2192 now | **8.5 s, sustained** (170\u00d7 spike) |\n\nFiring alert: `Cassandra GC pause exceeds threshold` (critical, 8.5 > 5.0 threshold) on `cassandra-03:9042`.\n\nThe other indicators (heap %, compaction pending, client timeouts, gossip state, system.log, GC log, `nodetool` presets) returned no data in this mock scenario, so I'm relying on the alert + GC time series + th"
   }
 ]

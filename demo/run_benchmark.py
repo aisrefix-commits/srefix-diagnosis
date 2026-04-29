@@ -30,6 +30,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -82,6 +83,17 @@ def run_scenario(scenario: dict, timeout: int) -> dict:
     env = os.environ.copy()
     env["DEMO_SCENARIO_ID"] = sid
 
+    # Per-scenario MCP config: rewrite the mock-telemetry env so claude's MCP
+    # spawner gets the right scenario regardless of how it propagates env.
+    base_config = json.loads(MCP_CONFIG_PATH.read_text())
+    base_config["mcpServers"]["srefix-mock-telemetry"].setdefault("env", {})
+    base_config["mcpServers"]["srefix-mock-telemetry"]["env"]["DEMO_SCENARIO_ID"] = sid
+    tmp_cfg = tempfile.NamedTemporaryFile(
+        mode="w", suffix=f"-{sid}.json", delete=False, encoding="utf-8"
+    )
+    json.dump(base_config, tmp_cfg)
+    tmp_cfg.close()
+
     print(f"\n── Running {sid} ──")
     print(f"  prompt:   {prompt[:100]}{'...' if len(prompt) > 100 else ''}")
     print(f"  expected keywords: {expected_keywords}")
@@ -91,12 +103,13 @@ def run_scenario(scenario: dict, timeout: int) -> dict:
     try:
         proc = subprocess.run(
             ["claude", "--print",
-             "--mcp-config", str(MCP_CONFIG_PATH),
+             "--mcp-config", tmp_cfg.name,
              "--dangerously-skip-permissions",
              prompt],
             env=env, capture_output=True, text=True, timeout=timeout,
         )
     except subprocess.TimeoutExpired:
+        Path(tmp_cfg.name).unlink(missing_ok=True)
         return {
             "id": sid, "name": scenario["name"], "difficulty": scenario["difficulty"],
             "passed": False, "duration_s": timeout,
@@ -105,6 +118,7 @@ def run_scenario(scenario: dict, timeout: int) -> dict:
             "matched_keywords": [], "keyword_score": 0.0,
         }
     duration = time.time() - t0
+    Path(tmp_cfg.name).unlink(missing_ok=True)
 
     output = (proc.stdout or "") + "\n" + (proc.stderr or "")
     score, matched = keyword_score(output, expected_keywords)

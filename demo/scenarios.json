@@ -357,9 +357,11 @@
         "election",
         "primary",
         "replica",
-        "stepdown"
+        "stepdown",
+        "rollback",
+        "secondary"
       ],
-      "min_confidence": 0.7,
+      "min_confidence": 0.5,
       "root_component": "mongodb"
     },
     "expected_runbook": {
@@ -823,7 +825,8 @@
         "dns",
         "coredns",
         "resolution",
-        "servfail"
+        "servfail",
+        "lookup"
       ],
       "min_confidence": 0.8,
       "root_component": "coredns"

@@ -26,6 +26,13 @@
 > See `NOTICE` for the list of public sources whose documentation informed
 > synthesis, and `ISSUES.md` to report any copyright concerns.
 
+> **Verify coverage caveat**: only **3 of 250 manuals** (`nginx`, `prometheus`,
+> `vitess`) currently ship with metric-name whitelists, against which a manual's
+> PromQL is verified. The other 247 manuals are LLM-synthesized and unverified
+> — Claude may reference metric names that don't exist in your environment.
+> **Run `srefix-verify-corpus` before trusting the manuals on a tech that
+> matters.** Adding a whitelist takes ~10 min per tech; PRs welcome.
+
 ## What's in this repo
 
 | Directory | What it is |
@@ -52,15 +59,21 @@ production environment. Reasoning is genuine — only the I/O is mocked.
 
 | Scenario | Difficulty | Pass | Duration | Keywords matched |
 |----------|------------|------|----------|------------------|
-| Nginx 502 Bad Gateway — Upstream Timeout | Basic | ✓ | 60.9s | 4/4 (100%) |
-| MongoDB Replica Set Election Storm | Advanced | ✓ | 107.0s | 4/4 (100%) |
-| etcd Disk I/O Latency Degrading Kubernetes | Advanced | ✓ | 104.3s | 5/5 (100%) |
-| CoreDNS Failure — Cluster-wide DNS Outage | Advanced | ✓ | 97.4s | 4/4 (100%) |
-| Cassandra GC Pause Storm | Intermediate | ✓ | 98.6s | 4/5 (80%) |
+| Nginx 502 Bad Gateway — Upstream Timeout | Basic | ✓ | 57.2s | 4/4 (100%) |
+| MongoDB Replica Set Election Storm | Advanced | ✓ | 44.2s | 4/6 (67%) |
+| etcd Disk I/O Latency Degrading Kubernetes | Advanced | ✓ | 36.0s | 5/5 (100%) |
+| CoreDNS Failure — Cluster-wide DNS Outage | Advanced | ✓ | 90.9s | 5/5 (100%) |
+| Cassandra GC Pause Storm | Intermediate | ✓ | 100.0s | 4/5 (80%) |
 
-**Pass rate: 5/5 (100%) · avg 93.6s** — see [demo/](./demo/) to reproduce
-locally with `python3 demo/run_benchmark.py`. Detailed JSON report:
+**Pass rate: 5/5 (100%) · avg 65.7s** — reproduce with
+`python3 demo/run_benchmark.py`; per-scenario detail in
 [demo/benchmark_report.json](./demo/benchmark_report.json).
+Pass criterion: keyword overlap with the scenario's expected diagnosis
+≥ `min_confidence` (0.5–0.8 per scenario, see `scenarios.json`). Keyword
+sets include reasonable domain synonyms (e.g., `rollback` and `secondary`
+alongside `stepdown`/`replica` for the MongoDB scenario) so a correct
+diagnosis using equivalent vocabulary still scores. Numbers fluctuate
+±10s run-to-run from non-determinism in Claude's tool-use loop.
 
 | Layer | MCP servers | Tools |
 |-------|-------------|-------|
@@ -305,14 +318,14 @@ flagged as a likely hallucination.
 
 ```bash
 # 1. Install the verifier (small — no telemetry deps)
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/verify-mcp
+cd srefix-diagnosis/verify-mcp
 pip install -e .
 
 # 2. Run the audit on the whole agents/ corpus
-srefix-verify-corpus /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/agents
+srefix-verify-corpus srefix-diagnosis/agents
 
 # Or just one tech
-srefix-verify-corpus --tech vitess /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/agents
+srefix-verify-corpus --tech vitess srefix-diagnosis/agents
 ```
 
 Sample output:
@@ -425,12 +438,19 @@ Tools: `verify_manual`, `audit_corpus`, `list_whitelisted_techs`,
 
 ## Quick Start
 
+> **Requirements**: Python **3.10+**, the `claude` CLI ([Claude Code](https://claude.com/claude-code)) on PATH.
+> If your system Python is 3.9 or older, create a fresh env first:
+> ```bash
+> conda create -n srefix python=3.11 -y && conda activate srefix
+> # or: python3.11 -m venv .venv && source .venv/bin/activate
+> ```
+
 ### 1. The 250 diagnosis MCPs (`mcp/`)
 
 By default, `pip install -e .` would install all 250 commands. **You almost never want this** — too heavy for Claude. Pick a subset first.
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/mcp
+cd srefix-diagnosis/mcp
 
 # See what's available
 python3 generate.py --list-all
@@ -479,7 +499,7 @@ pip install -e .
 ### 2. Discovery MCP (cluster auto-discovery)
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/discovery-mcp
+cd srefix-diagnosis/discovery-mcp
 pip install -e ".[all]"   # includes kubernetes + kazoo extras
 # Or pick one:
 #   pip install -e ".[kubernetes]"
@@ -510,7 +530,7 @@ Run: `srefix-discovery`
 ### 3. Prometheus MCP
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/prometheus-mcp
+cd srefix-diagnosis/prometheus-mcp
 pip install -e .
 
 export PROMETHEUS_URL=http://prometheus.prod:9090
@@ -526,7 +546,7 @@ Run: `srefix-prom`
 ### 4. Loki MCP
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/loki-mcp
+cd srefix-diagnosis/loki-mcp
 pip install -e .
 
 export LOKI_URL=http://loki.prod:3100
@@ -542,7 +562,7 @@ Run: `srefix-loki`
 ### 5. Elasticsearch / OpenSearch MCP
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/es-mcp
+cd srefix-diagnosis/es-mcp
 pip install -e .
 
 export ES_URL=https://es.prod:9200
@@ -559,7 +579,7 @@ Run: `srefix-es`
 ### 6. Jumphost MCP (SSH via bastion)
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/jumphost-mcp
+cd srefix-diagnosis/jumphost-mcp
 pip install -e .
 ```
 
@@ -626,7 +646,7 @@ Run: `srefix-jumphost`
 ### 7. Explorer MCP (Tier-2/3 fallback)
 
 ```bash
-cd /Users/albericliu/PrivateWorkspace/GitHub/srefix-diagnosis/explorer-mcp
+cd srefix-diagnosis/explorer-mcp
 pip install -e .
 ```
 
