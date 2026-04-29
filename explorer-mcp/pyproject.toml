@@ -1,0 +1,16 @@
+[project]
+name = "srefix-explorer-mcp"
+version = "0.1.0"
+description = "Fallback exploration MCP — generates structured diagnosis plans when diag-{tech} has no matching case"
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.0.0"]
+
+[project.scripts]
+srefix-explorer = "explorer_mcp.server:run"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]

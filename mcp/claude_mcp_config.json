@@ -1,0 +1,754 @@
+{
+  "mcpServers": {
+    "diag-acm": {
+      "command": "srefix-diag-acm"
+    },
+    "diag-acr": {
+      "command": "srefix-diag-acr"
+    },
+    "diag-activemq": {
+      "command": "srefix-diag-activemq"
+    },
+    "diag-aerospike": {
+      "command": "srefix-diag-aerospike"
+    },
+    "diag-airflow": {
+      "command": "srefix-diag-airflow"
+    },
+    "diag-aks": {
+      "command": "srefix-diag-aks"
+    },
+    "diag-aks-ingress-gateway": {
+      "command": "srefix-diag-aks-ingress-gateway"
+    },
+    "diag-alertmanager": {
+      "command": "srefix-diag-alertmanager"
+    },
+    "diag-alloydb": {
+      "command": "srefix-diag-alloydb"
+    },
+    "diag-api-management": {
+      "command": "srefix-diag-api-management"
+    },
+    "diag-apisix": {
+      "command": "srefix-diag-apisix"
+    },
+    "diag-apollo": {
+      "command": "srefix-diag-apollo"
+    },
+    "diag-app-config": {
+      "command": "srefix-diag-app-config"
+    },
+    "diag-application-insights": {
+      "command": "srefix-diag-application-insights"
+    },
+    "diag-arangodb": {
+      "command": "srefix-diag-arangodb"
+    },
+    "diag-argocd": {
+      "command": "srefix-diag-argocd"
+    },
+    "diag-artifact-registry": {
+      "command": "srefix-diag-artifact-registry"
+    },
+    "diag-aurora": {
+      "command": "srefix-diag-aurora"
+    },
+    "diag-auth0": {
+      "command": "srefix-diag-auth0"
+    },
+    "diag-aws-alb": {
+      "command": "srefix-diag-aws-alb"
+    },
+    "diag-aws-api-gateway": {
+      "command": "srefix-diag-aws-api-gateway"
+    },
+    "diag-aws-emr": {
+      "command": "srefix-diag-aws-emr"
+    },
+    "diag-aws-iam": {
+      "command": "srefix-diag-aws-iam"
+    },
+    "diag-aws-lambda": {
+      "command": "srefix-diag-aws-lambda"
+    },
+    "diag-aws-rds": {
+      "command": "srefix-diag-aws-rds"
+    },
+    "diag-aws-s3": {
+      "command": "srefix-diag-aws-s3"
+    },
+    "diag-aws-sqs": {
+      "command": "srefix-diag-aws-sqs"
+    },
+    "diag-aws-vpc": {
+      "command": "srefix-diag-aws-vpc"
+    },
+    "diag-azure-application-gateway": {
+      "command": "srefix-diag-azure-application-gateway"
+    },
+    "diag-azure-cache-redis": {
+      "command": "srefix-diag-azure-cache-redis"
+    },
+    "diag-azure-cosmosdb": {
+      "command": "srefix-diag-azure-cosmosdb"
+    },
+    "diag-azure-dns": {
+      "command": "srefix-diag-azure-dns"
+    },
+    "diag-azure-entra-id": {
+      "command": "srefix-diag-azure-entra-id"
+    },
+    "diag-azure-front-door": {
+      "command": "srefix-diag-azure-front-door"
+    },
+    "diag-azure-functions": {
+      "command": "srefix-diag-azure-functions"
+    },
+    "diag-azure-key-vault": {
+      "command": "srefix-diag-azure-key-vault"
+    },
+    "diag-azure-monitor": {
+      "command": "srefix-diag-azure-monitor"
+    },
+    "diag-azure-postgres": {
+      "command": "srefix-diag-azure-postgres"
+    },
+    "diag-azure-service-bus": {
+      "command": "srefix-diag-azure-service-bus"
+    },
+    "diag-azure-sql": {
+      "command": "srefix-diag-azure-sql"
+    },
+    "diag-azure-vm": {
+      "command": "srefix-diag-azure-vm"
+    },
+    "diag-azure-vnet": {
+      "command": "srefix-diag-azure-vnet"
+    },
+    "diag-bigquery": {
+      "command": "srefix-diag-bigquery"
+    },
+    "diag-bind": {
+      "command": "srefix-diag-bind"
+    },
+    "diag-blob-storage": {
+      "command": "srefix-diag-blob-storage"
+    },
+    "diag-caddy": {
+      "command": "srefix-diag-caddy"
+    },
+    "diag-calico": {
+      "command": "srefix-diag-calico"
+    },
+    "diag-capacity-planner": {
+      "command": "srefix-diag-capacity-planner"
+    },
+    "diag-cassandra": {
+      "command": "srefix-diag-cassandra"
+    },
+    "diag-ceph": {
+      "command": "srefix-diag-ceph"
+    },
+    "diag-cert-manager": {
+      "command": "srefix-diag-cert-manager"
+    },
+    "diag-change-risk": {
+      "command": "srefix-diag-change-risk"
+    },
+    "diag-chaos-engineer": {
+      "command": "srefix-diag-chaos-engineer"
+    },
+    "diag-chromadb": {
+      "command": "srefix-diag-chromadb"
+    },
+    "diag-cilium": {
+      "command": "srefix-diag-cilium"
+    },
+    "diag-circleci": {
+      "command": "srefix-diag-circleci"
+    },
+    "diag-clickhouse": {
+      "command": "srefix-diag-clickhouse"
+    },
+    "diag-cloud-armor": {
+      "command": "srefix-diag-cloud-armor"
+    },
+    "diag-cloud-build": {
+      "command": "srefix-diag-cloud-build"
+    },
+    "diag-cloud-dns": {
+      "command": "srefix-diag-cloud-dns"
+    },
+    "diag-cloud-functions": {
+      "command": "srefix-diag-cloud-functions"
+    },
+    "diag-cloud-nat": {
+      "command": "srefix-diag-cloud-nat"
+    },
+    "diag-cloud-router": {
+      "command": "srefix-diag-cloud-router"
+    },
+    "diag-cloud-run": {
+      "command": "srefix-diag-cloud-run"
+    },
+    "diag-cloud-scheduler": {
+      "command": "srefix-diag-cloud-scheduler"
+    },
+    "diag-cloud-spanner": {
+      "command": "srefix-diag-cloud-spanner"
+    },
+    "diag-cloud-sql": {
+      "command": "srefix-diag-cloud-sql"
+    },
+    "diag-cloud-tasks": {
+      "command": "srefix-diag-cloud-tasks"
+    },
+    "diag-cloudflare": {
+      "command": "srefix-diag-cloudflare"
+    },
+    "diag-cloudfront": {
+      "command": "srefix-diag-cloudfront"
+    },
+    "diag-cloudmap": {
+      "command": "srefix-diag-cloudmap"
+    },
+    "diag-cloudtrail": {
+      "command": "srefix-diag-cloudtrail"
+    },
+    "diag-cloudwatch": {
+      "command": "srefix-diag-cloudwatch"
+    },
+    "diag-cloudwatch-logs": {
+      "command": "srefix-diag-cloudwatch-logs"
+    },
+    "diag-cockroachdb": {
+      "command": "srefix-diag-cockroachdb"
+    },
+    "diag-comms": {
+      "command": "srefix-diag-comms"
+    },
+    "diag-consul": {
+      "command": "srefix-diag-consul"
+    },
+    "diag-containerd": {
+      "command": "srefix-diag-containerd"
+    },
+    "diag-coredns": {
+      "command": "srefix-diag-coredns"
+    },
+    "diag-couchbase": {
+      "command": "srefix-diag-couchbase"
+    },
+    "diag-couchdb": {
+      "command": "srefix-diag-couchdb"
+    },
+    "diag-databricks": {
+      "command": "srefix-diag-databricks"
+    },
+    "diag-datadog": {
+      "command": "srefix-diag-datadog"
+    },
+    "diag-datadog-logs": {
+      "command": "srefix-diag-datadog-logs"
+    },
+    "diag-dbt": {
+      "command": "srefix-diag-dbt"
+    },
+    "diag-deployment-engineer": {
+      "command": "srefix-diag-deployment-engineer"
+    },
+    "diag-dgraph": {
+      "command": "srefix-diag-dgraph"
+    },
+    "diag-diagnosis": {
+      "command": "srefix-diag-diagnosis"
+    },
+    "diag-docker": {
+      "command": "srefix-diag-docker"
+    },
+    "diag-docker-compose": {
+      "command": "srefix-diag-docker-compose"
+    },
+    "diag-drone": {
+      "command": "srefix-diag-drone"
+    },
+    "diag-druid": {
+      "command": "srefix-diag-druid"
+    },
+    "diag-dynamodb": {
+      "command": "srefix-diag-dynamodb"
+    },
+    "diag-ec2": {
+      "command": "srefix-diag-ec2"
+    },
+    "diag-ecr": {
+      "command": "srefix-diag-ecr"
+    },
+    "diag-ecs": {
+      "command": "srefix-diag-ecs"
+    },
+    "diag-efs": {
+      "command": "srefix-diag-efs"
+    },
+    "diag-eks": {
+      "command": "srefix-diag-eks"
+    },
+    "diag-elasticache": {
+      "command": "srefix-diag-elasticache"
+    },
+    "diag-envoy": {
+      "command": "srefix-diag-envoy"
+    },
+    "diag-es": {
+      "command": "srefix-diag-es"
+    },
+    "diag-etcd": {
+      "command": "srefix-diag-etcd"
+    },
+    "diag-event-hubs": {
+      "command": "srefix-diag-event-hubs"
+    },
+    "diag-eventbridge": {
+      "command": "srefix-diag-eventbridge"
+    },
+    "diag-external-secrets": {
+      "command": "srefix-diag-external-secrets"
+    },
+    "diag-externaldns": {
+      "command": "srefix-diag-externaldns"
+    },
+    "diag-falco": {
+      "command": "srefix-diag-falco"
+    },
+    "diag-filebeat": {
+      "command": "srefix-diag-filebeat"
+    },
+    "diag-filestore": {
+      "command": "srefix-diag-filestore"
+    },
+    "diag-firestore": {
+      "command": "srefix-diag-firestore"
+    },
+    "diag-flannel": {
+      "command": "srefix-diag-flannel"
+    },
+    "diag-flink": {
+      "command": "srefix-diag-flink"
+    },
+    "diag-fluentd": {
+      "command": "srefix-diag-fluentd"
+    },
+    "diag-flux": {
+      "command": "srefix-diag-flux"
+    },
+    "diag-fly": {
+      "command": "srefix-diag-fly"
+    },
+    "diag-foundationdb": {
+      "command": "srefix-diag-foundationdb"
+    },
+    "diag-gce": {
+      "command": "srefix-diag-gce"
+    },
+    "diag-gcp-iam": {
+      "command": "srefix-diag-gcp-iam"
+    },
+    "diag-gcp-secret-manager": {
+      "command": "srefix-diag-gcp-secret-manager"
+    },
+    "diag-gcs": {
+      "command": "srefix-diag-gcs"
+    },
+    "diag-github-actions": {
+      "command": "srefix-diag-github-actions"
+    },
+    "diag-gitlab-ci": {
+      "command": "srefix-diag-gitlab-ci"
+    },
+    "diag-gke": {
+      "command": "srefix-diag-gke"
+    },
+    "diag-glusterfs": {
+      "command": "srefix-diag-glusterfs"
+    },
+    "diag-google-cloud-load-balancer": {
+      "command": "srefix-diag-google-cloud-load-balancer"
+    },
+    "diag-grafana": {
+      "command": "srefix-diag-grafana"
+    },
+    "diag-graylog": {
+      "command": "srefix-diag-graylog"
+    },
+    "diag-hadoop": {
+      "command": "srefix-diag-hadoop"
+    },
+    "diag-haproxy": {
+      "command": "srefix-diag-haproxy"
+    },
+    "diag-harness": {
+      "command": "srefix-diag-harness"
+    },
+    "diag-hbase": {
+      "command": "srefix-diag-hbase"
+    },
+    "diag-hdfs": {
+      "command": "srefix-diag-hdfs"
+    },
+    "diag-helm": {
+      "command": "srefix-diag-helm"
+    },
+    "diag-hive": {
+      "command": "srefix-diag-hive"
+    },
+    "diag-influxdb": {
+      "command": "srefix-diag-influxdb"
+    },
+    "diag-ingress-nginx": {
+      "command": "srefix-diag-ingress-nginx"
+    },
+    "diag-istio": {
+      "command": "srefix-diag-istio"
+    },
+    "diag-jaeger": {
+      "command": "srefix-diag-jaeger"
+    },
+    "diag-janusgraph": {
+      "command": "srefix-diag-janusgraph"
+    },
+    "diag-jenkins": {
+      "command": "srefix-diag-jenkins"
+    },
+    "diag-k8s": {
+      "command": "srefix-diag-k8s"
+    },
+    "diag-kafka": {
+      "command": "srefix-diag-kafka"
+    },
+    "diag-keycloak": {
+      "command": "srefix-diag-keycloak"
+    },
+    "diag-kinesis": {
+      "command": "srefix-diag-kinesis"
+    },
+    "diag-knative": {
+      "command": "srefix-diag-knative"
+    },
+    "diag-kong": {
+      "command": "srefix-diag-kong"
+    },
+    "diag-linkerd": {
+      "command": "srefix-diag-linkerd"
+    },
+    "diag-logic-apps": {
+      "command": "srefix-diag-logic-apps"
+    },
+    "diag-logstash": {
+      "command": "srefix-diag-logstash"
+    },
+    "diag-loki": {
+      "command": "srefix-diag-loki"
+    },
+    "diag-longhorn": {
+      "command": "srefix-diag-longhorn"
+    },
+    "diag-mariadb": {
+      "command": "srefix-diag-mariadb"
+    },
+    "diag-meilisearch": {
+      "command": "srefix-diag-meilisearch"
+    },
+    "diag-memcached": {
+      "command": "srefix-diag-memcached"
+    },
+    "diag-memorystore": {
+      "command": "srefix-diag-memorystore"
+    },
+    "diag-metallb": {
+      "command": "srefix-diag-metallb"
+    },
+    "diag-milvus": {
+      "command": "srefix-diag-milvus"
+    },
+    "diag-mimir": {
+      "command": "srefix-diag-mimir"
+    },
+    "diag-minio": {
+      "command": "srefix-diag-minio"
+    },
+    "diag-mongo": {
+      "command": "srefix-diag-mongo"
+    },
+    "diag-msk": {
+      "command": "srefix-diag-msk"
+    },
+    "diag-mysql": {
+      "command": "srefix-diag-mysql"
+    },
+    "diag-nacos": {
+      "command": "srefix-diag-nacos"
+    },
+    "diag-nagios": {
+      "command": "srefix-diag-nagios"
+    },
+    "diag-nats": {
+      "command": "srefix-diag-nats"
+    },
+    "diag-neo4j": {
+      "command": "srefix-diag-neo4j"
+    },
+    "diag-neptune": {
+      "command": "srefix-diag-neptune"
+    },
+    "diag-netlify": {
+      "command": "srefix-diag-netlify"
+    },
+    "diag-newrelic": {
+      "command": "srefix-diag-newrelic"
+    },
+    "diag-nfs": {
+      "command": "srefix-diag-nfs"
+    },
+    "diag-nginx": {
+      "command": "srefix-diag-nginx"
+    },
+    "diag-nlb": {
+      "command": "srefix-diag-nlb"
+    },
+    "diag-nomad": {
+      "command": "srefix-diag-nomad"
+    },
+    "diag-oauth2-proxy": {
+      "command": "srefix-diag-oauth2-proxy"
+    },
+    "diag-observability": {
+      "command": "srefix-diag-observability"
+    },
+    "diag-okta": {
+      "command": "srefix-diag-okta"
+    },
+    "diag-opa": {
+      "command": "srefix-diag-opa"
+    },
+    "diag-openfaas": {
+      "command": "srefix-diag-openfaas"
+    },
+    "diag-opensearch": {
+      "command": "srefix-diag-opensearch"
+    },
+    "diag-openshift": {
+      "command": "srefix-diag-openshift"
+    },
+    "diag-opsgenie": {
+      "command": "srefix-diag-opsgenie"
+    },
+    "diag-oracle": {
+      "command": "srefix-diag-oracle"
+    },
+    "diag-otel-collector": {
+      "command": "srefix-diag-otel-collector"
+    },
+    "diag-pagerduty": {
+      "command": "srefix-diag-pagerduty"
+    },
+    "diag-pg": {
+      "command": "srefix-diag-pg"
+    },
+    "diag-pgvector": {
+      "command": "srefix-diag-pgvector"
+    },
+    "diag-pinecone": {
+      "command": "srefix-diag-pinecone"
+    },
+    "diag-planetscale": {
+      "command": "srefix-diag-planetscale"
+    },
+    "diag-platform-engineer": {
+      "command": "srefix-diag-platform-engineer"
+    },
+    "diag-podman": {
+      "command": "srefix-diag-podman"
+    },
+    "diag-postgres": {
+      "command": "srefix-diag-postgres"
+    },
+    "diag-postmortem": {
+      "command": "srefix-diag-postmortem"
+    },
+    "diag-powerdns": {
+      "command": "srefix-diag-powerdns"
+    },
+    "diag-prometheus": {
+      "command": "srefix-diag-prometheus"
+    },
+    "diag-pubsub": {
+      "command": "srefix-diag-pubsub"
+    },
+    "diag-pulsar": {
+      "command": "srefix-diag-pulsar"
+    },
+    "diag-pyroscope": {
+      "command": "srefix-diag-pyroscope"
+    },
+    "diag-qdrant": {
+      "command": "srefix-diag-qdrant"
+    },
+    "diag-questdb": {
+      "command": "srefix-diag-questdb"
+    },
+    "diag-rabbitmq": {
+      "command": "srefix-diag-rabbitmq"
+    },
+    "diag-rancher": {
+      "command": "srefix-diag-rancher"
+    },
+    "diag-redis": {
+      "command": "srefix-diag-redis"
+    },
+    "diag-redpanda": {
+      "command": "srefix-diag-redpanda"
+    },
+    "diag-redshift": {
+      "command": "srefix-diag-redshift"
+    },
+    "diag-rocketmq": {
+      "command": "srefix-diag-rocketmq"
+    },
+    "diag-rook": {
+      "command": "srefix-diag-rook"
+    },
+    "diag-route53": {
+      "command": "srefix-diag-route53"
+    },
+    "diag-scylladb": {
+      "command": "srefix-diag-scylladb"
+    },
+    "diag-secops": {
+      "command": "srefix-diag-secops"
+    },
+    "diag-secrets-manager": {
+      "command": "srefix-diag-secrets-manager"
+    },
+    "diag-sentinel": {
+      "command": "srefix-diag-sentinel"
+    },
+    "diag-sentry": {
+      "command": "srefix-diag-sentry"
+    },
+    "diag-ses": {
+      "command": "srefix-diag-ses"
+    },
+    "diag-slo-guardian": {
+      "command": "srefix-diag-slo-guardian"
+    },
+    "diag-snowflake": {
+      "command": "srefix-diag-snowflake"
+    },
+    "diag-sns": {
+      "command": "srefix-diag-sns"
+    },
+    "diag-solr": {
+      "command": "srefix-diag-solr"
+    },
+    "diag-spark": {
+      "command": "srefix-diag-spark"
+    },
+    "diag-spinnaker": {
+      "command": "srefix-diag-spinnaker"
+    },
+    "diag-splunk": {
+      "command": "srefix-diag-splunk"
+    },
+    "diag-spring-cloud-config": {
+      "command": "srefix-diag-spring-cloud-config"
+    },
+    "diag-sqlserver": {
+      "command": "srefix-diag-sqlserver"
+    },
+    "diag-ssm": {
+      "command": "srefix-diag-ssm"
+    },
+    "diag-step-functions": {
+      "command": "srefix-diag-step-functions"
+    },
+    "diag-supabase": {
+      "command": "srefix-diag-supabase"
+    },
+    "diag-tdengine": {
+      "command": "srefix-diag-tdengine"
+    },
+    "diag-tekton": {
+      "command": "srefix-diag-tekton"
+    },
+    "diag-teleport": {
+      "command": "srefix-diag-teleport"
+    },
+    "diag-tempo": {
+      "command": "srefix-diag-tempo"
+    },
+    "diag-terraform": {
+      "command": "srefix-diag-terraform"
+    },
+    "diag-thanos": {
+      "command": "srefix-diag-thanos"
+    },
+    "diag-tidb": {
+      "command": "srefix-diag-tidb"
+    },
+    "diag-timescaledb": {
+      "command": "srefix-diag-timescaledb"
+    },
+    "diag-toil-buster": {
+      "command": "srefix-diag-toil-buster"
+    },
+    "diag-traefik": {
+      "command": "srefix-diag-traefik"
+    },
+    "diag-traffic-manager": {
+      "command": "srefix-diag-traffic-manager"
+    },
+    "diag-triage": {
+      "command": "srefix-diag-triage"
+    },
+    "diag-trino": {
+      "command": "srefix-diag-trino"
+    },
+    "diag-trivy": {
+      "command": "srefix-diag-trivy"
+    },
+    "diag-typesense": {
+      "command": "srefix-diag-typesense"
+    },
+    "diag-vault": {
+      "command": "srefix-diag-vault"
+    },
+    "diag-vector": {
+      "command": "srefix-diag-vector"
+    },
+    "diag-vercel": {
+      "command": "srefix-diag-vercel"
+    },
+    "diag-victoriametrics": {
+      "command": "srefix-diag-victoriametrics"
+    },
+    "diag-vitess": {
+      "command": "srefix-diag-vitess"
+    },
+    "diag-vpc": {
+      "command": "srefix-diag-vpc"
+    },
+    "diag-weaviate": {
+      "command": "srefix-diag-weaviate"
+    },
+    "diag-zabbix": {
+      "command": "srefix-diag-zabbix"
+    },
+    "diag-zipkin": {
+      "command": "srefix-diag-zipkin"
+    },
+    "diag-zookeeper": {
+      "command": "srefix-diag-zookeeper"
+    }
+  }
+}

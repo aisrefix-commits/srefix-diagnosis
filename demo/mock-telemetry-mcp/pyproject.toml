@@ -1,0 +1,16 @@
+[project]
+name = "srefix-mock-telemetry-mcp"
+version = "0.1.0"
+description = "Stage prop for srefix-diagnosis demo — fakes prom/loki/jumphost MCP tools backed by canned scenario data"
+requires-python = ">=3.10"
+dependencies = ["mcp>=1.0.0"]
+
+[project.scripts]
+srefix-mock-telemetry = "mock_telemetry_mcp.server:run"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]

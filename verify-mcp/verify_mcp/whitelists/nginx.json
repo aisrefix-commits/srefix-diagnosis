@@ -1,0 +1,18 @@
+{
+  "tech": "nginx",
+  "source": "nginxinc/nginx-prometheus-exporter v1.x (github.com/nginxinc/nginx-prometheus-exporter) — full metric set for OSS nginx mode (nginx_*). NGINX Plus metrics (nginxplus_*) intentionally omitted from this whitelist; add via PR if your manual covers Plus.",
+  "captured_at": "2026-04-27",
+  "method": "From the exporter README's documented metric tables (oss-stub_status mode).",
+  "completeness": "full (OSS only)",
+  "metric_names": [
+    "nginx_up",
+    "nginx_connections_accepted",
+    "nginx_connections_active",
+    "nginx_connections_handled",
+    "nginx_connections_reading",
+    "nginx_connections_waiting",
+    "nginx_connections_writing",
+    "nginx_http_requests_total",
+    "nginx_exporter_build_info"
+  ]
+}

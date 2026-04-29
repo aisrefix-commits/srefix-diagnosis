@@ -1,0 +1,19 @@
+[project]
+name = "srefix-prometheus-mcp"
+version = "0.1.0"
+description = "MCP server exposing Prometheus query API for the diagnosis stack"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "requests>=2.31",
+]
+
+[project.scripts]
+srefix-prom = "prometheus_mcp.server:run"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]

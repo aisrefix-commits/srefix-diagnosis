@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "srefix-mock-telemetry": {
+      "command": "srefix-mock-telemetry",
+      "env": {
+        "DEMO_SCENARIO_ID": "nginx-502-upstream-001"
+      }
+    },
+    "srefix-explorer": {
+      "command": "srefix-explorer"
+    },
+    "diag-nginx":     { "command": "srefix-diag-nginx" },
+    "diag-mongo":     { "command": "srefix-diag-mongo" },
+    "diag-etcd":      { "command": "srefix-diag-etcd" },
+    "diag-coredns":   { "command": "srefix-diag-coredns" },
+    "diag-cassandra": { "command": "srefix-diag-cassandra" },
+    "diag-k8s":       { "command": "srefix-diag-k8s" }
+  }
+}

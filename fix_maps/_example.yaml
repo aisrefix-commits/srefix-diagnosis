@@ -1,0 +1,33 @@
+# Example fix-map. Schema reference for `srefix-fix apply`.
+#
+# Workflow:
+#   1. srefix-fix propose <tech>                  # LLM drafts fixes (read-only)
+#   2. <human review: drop unsure entries, fix `new` if wrong, add confirmed_by>
+#   3. srefix-fix apply fix_maps/<tech>.yaml --dry-run
+#   4. srefix-fix apply fix_maps/<tech>.yaml      # writes in place
+#   5. git diff agents/<tech>-agent.md && git commit
+#
+# Only entries with non-empty `confirmed_by` are applied. Replacements use
+# word boundaries (\b...\b), so `vtgate_queries_error` won't match inside
+# `vtgate_queries_error_total`.
+
+tech: vitess
+proposed_at: "2026-04-27"
+proposed_by: "manual draft (illustrative example)"
+authority: "github.com/vitessio/vitess @ v18.0.2 — go/vt/vtgate/scatter_conn.go"
+notes: "Illustrative file. Real proposals come from `srefix-fix propose vitess`."
+
+fixes:
+  # An LLM proposal a human has confirmed (will be applied):
+  - old: vtgate_queries_error
+    new: vtgate_api_error_counts
+    rationale: "vtgate emits api_error_counts via stats.NewCountersWithMultiLabels in scatter_conn.go; vtgate_queries_error does not exist in the metric registry."
+    confirmed_by: alberic
+    occurrences_expected: 6   # in PromQL contexts; total prose mentions are ~21
+
+  # An LLM proposal a human is NOT yet sure about (will be skipped):
+  - old: vtgate_queries_processed_total
+    new: vtgate_queries_processed
+    rationale: "vtgate registers queries_processed without _total suffix."
+    confirmed_by: ""    # ← empty: skipped on apply
+    occurrences_expected: 4

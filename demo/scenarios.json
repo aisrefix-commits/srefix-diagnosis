@@ -1,0 +1,1217 @@
+[
+  {
+    "id": "nginx-502-upstream-001",
+    "name": "Nginx 502 Bad Gateway - Upstream Timeout",
+    "source": "Common SRE Scenario",
+    "source_url": null,
+    "tags": [
+      "nginx",
+      "502",
+      "upstream",
+      "timeout"
+    ],
+    "difficulty": "Basic",
+    "input_alerts": [
+      {
+        "source": "prometheus",
+        "title": "Nginx 502 error rate critical",
+        "description": "502 Bad Gateway errors exceeding 20% of all requests",
+        "severity": "critical",
+        "service": "nginx-frontend",
+        "metric_name": "nginx_http_5xx_rate",
+        "metric_value": 25.0,
+        "threshold": 5.0,
+        "labels": {
+          "upstream": "backend-api"
+        },
+        "delay_secs": null
+      }
+    ],
+    "expected_diagnosis": {
+      "root_cause_category": "dependency_failure",
+      "keywords": [
+        "upstream",
+        "502",
+        "backend",
+        "timeout"
+      ],
+      "min_confidence": 0.8,
+      "root_component": "nginx"
+    },
+    "expected_runbook": {
+      "id_pattern": "nginx",
+      "technology": "nginx",
+      "min_steps": 3
+    },
+    "expected_actions": [
+      {
+        "action_type": "diagnostic",
+        "description_keywords": [
+          "upstream",
+          "error",
+          "log"
+        ],
+        "risk_level": "low"
+      },
+      {
+        "action_type": "remediation",
+        "description_keywords": [
+          "upstream",
+          "health",
+          "restart"
+        ],
+        "risk_level": "medium"
+      }
+    ],
+    "actual_timeline": [
+      {
+        "offset_minutes": 0,
+        "description": "Backend API deployment causes slow startup",
+        "actor": "deployment"
+      },
+      {
+        "offset_minutes": 1,
+        "description": "Nginx upstream health checks fail",
+        "actor": "nginx"
+      },
+      {
+        "offset_minutes": 2,
+        "description": "502 errors returned to all users",
+        "actor": "nginx"
+      },
+      {
+        "offset_minutes": 8,
+        "description": "Backend pods healthy, traffic restored",
+        "actor": "kubernetes"
+      }
+    ],
+    "lessons_learned": [
+      "Configure proper upstream health check intervals",
+      "Add slow_start for upstream servers"
+    ],
+    "canned_telemetry": {
+      "prom": {
+        "rate(nginx_http_5xx_total[5m])": {
+          "type": "matrix",
+          "series": [
+            {
+              "labels": {
+                "upstream": "backend-api",
+                "instance": "nginx-frontend-1"
+              },
+              "points": [
+                [
+                  1714099200,
+                  "0.05"
+                ],
+                [
+                  1714099230,
+                  "0.05"
+                ],
+                [
+                  1714099260,
+                  "0.05"
+                ],
+                [
+                  1714099290,
+                  "0.05"
+                ],
+                [
+                  1714099320,
+                  "0.05"
+                ],
+                [
+                  1714099350,
+                  "0.05"
+                ],
+                [
+                  1714099380,
+                  "0.05"
+                ],
+                [
+                  1714099410,
+                  "0.05"
+                ],
+                [
+                  1714099440,
+                  "0.05"
+                ],
+                [
+                  1714099470,
+                  "0.05"
+                ],
+                [
+                  1714099500,
+                  "25.3"
+                ],
+                [
+                  1714099530,
+                  "25.3"
+                ],
+                [
+                  1714099560,
+                  "25.3"
+                ],
+                [
+                  1714099590,
+                  "25.3"
+                ],
+                [
+                  1714099620,
+                  "25.3"
+                ],
+                [
+                  1714099650,
+                  "25.3"
+                ],
+                [
+                  1714099680,
+                  "25.3"
+                ],
+                [
+                  1714099710,
+                  "25.3"
+                ],
+                [
+                  1714099740,
+                  "25.3"
+                ],
+                [
+                  1714099770,
+                  "25.3"
+                ],
+                [
+                  1714099800,
+                  "25.3"
+                ],
+                [
+                  1714099830,
+                  "25.3"
+                ],
+                [
+                  1714099860,
+                  "25.3"
+                ],
+                [
+                  1714099890,
+                  "25.3"
+                ],
+                [
+                  1714099920,
+                  "25.3"
+                ],
+                [
+                  1714099950,
+                  "25.3"
+                ],
+                [
+                  1714099980,
+                  "25.3"
+                ],
+                [
+                  1714100010,
+                  "25.3"
+                ],
+                [
+                  1714100040,
+                  "25.3"
+                ],
+                [
+                  1714100070,
+                  "25.3"
+                ],
+                [
+                  1714100100,
+                  "25.3"
+                ],
+                [
+                  1714100130,
+                  "25.3"
+                ],
+                [
+                  1714100160,
+                  "25.3"
+                ],
+                [
+                  1714100190,
+                  "25.3"
+                ],
+                [
+                  1714100220,
+                  "25.3"
+                ],
+                [
+                  1714100250,
+                  "25.3"
+                ],
+                [
+                  1714100280,
+                  "25.3"
+                ],
+                [
+                  1714100310,
+                  "25.3"
+                ],
+                [
+                  1714100340,
+                  "25.3"
+                ],
+                [
+                  1714100370,
+                  "25.3"
+                ]
+              ],
+              "trend": "spike: 0.05/s → 25.3/s at t=300s (5xx rate jumped 506x)"
+            }
+          ]
+        },
+        "up{job=~'nginx.*'}": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {
+                "job": "nginx",
+                "instance": "nginx-frontend-1"
+              },
+              "value": "1"
+            },
+            {
+              "labels": {
+                "job": "nginx",
+                "instance": "nginx-frontend-2"
+              },
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "loki": {
+        "{app=\"nginx\"} |~ \"(?i)upstream|502|backend\"": {
+          "streams": [
+            {
+              "labels": {
+                "app": "nginx",
+                "level": "error"
+              },
+              "lines": [
+                {
+                  "ts": "2026-04-27T09:23:00Z",
+                  "line": "[error] 1234#0: *567 upstream timed out (110: Connection timed out) while connecting to upstream, upstream: \"http://backend-api:8080/health\""
+                },
+                {
+                  "ts": "2026-04-27T09:23:01Z",
+                  "line": "[error] 1234#0: *568 connect() failed (111: Connection refused) while connecting to upstream"
+                },
+                {
+                  "ts": "2026-04-27T09:23:02Z",
+                  "line": "[error] 1234#0: upstream prematurely closed connection while reading response header"
+                }
+              ],
+              "lines_total": 487,
+              "truncated": true
+            }
+          ]
+        }
+      },
+      "jumphost": {
+        "nginx-upstream-status": {
+          "exit_code": 0,
+          "stdout": "Active connections: 1843\nserver accepts handled requests: 234567 234567 458931\nReading: 12 Writing: 89 Waiting: 1742\n[upstream backend-api] backend-1.svc:8080 - DOWN (last check: 30s ago)\n[upstream backend-api] backend-2.svc:8080 - UP\n[upstream backend-api] backend-3.svc:8080 - DOWN (connection refused)",
+          "duration_ms": 142
+        }
+      }
+    }
+  },
+  {
+    "id": "mongodb-replicaset-election-001",
+    "name": "MongoDB Replica Set Election Storm",
+    "source": "Common SRE Scenario",
+    "source_url": null,
+    "tags": [
+      "mongodb",
+      "replication",
+      "election",
+      "split-brain"
+    ],
+    "difficulty": "Advanced",
+    "input_alerts": [
+      {
+        "source": "prometheus",
+        "title": "MongoDB replica set election triggered",
+        "description": "Primary stepdown detected, election in progress",
+        "severity": "critical",
+        "service": "mongodb-primary",
+        "metric_name": "mongodb_rs_election_count",
+        "metric_value": 5.0,
+        "threshold": 1.0,
+        "labels": {
+          "cluster": "user-db-prod",
+          "rs": "rs0"
+        },
+        "delay_secs": null
+      }
+    ],
+    "expected_diagnosis": {
+      "root_cause_category": "infra_failure",
+      "keywords": [
+        "election",
+        "primary",
+        "replica",
+        "stepdown"
+      ],
+      "min_confidence": 0.7,
+      "root_component": "mongodb"
+    },
+    "expected_runbook": {
+      "id_pattern": "mongo",
+      "technology": "mongodb",
+      "min_steps": 3
+    },
+    "expected_actions": [
+      {
+        "action_type": "diagnostic",
+        "description_keywords": [
+          "rs.status",
+          "replica"
+        ],
+        "risk_level": "low"
+      },
+      {
+        "action_type": "remediation",
+        "description_keywords": [
+          "priority",
+          "election",
+          "freeze"
+        ],
+        "risk_level": "medium"
+      }
+    ],
+    "actual_timeline": [
+      {
+        "offset_minutes": 0,
+        "description": "Network flap causes primary to lose majority",
+        "actor": "network"
+      },
+      {
+        "offset_minutes": 1,
+        "description": "Multiple elections triggered across replica set",
+        "actor": "mongodb"
+      },
+      {
+        "offset_minutes": 5,
+        "description": "Application write errors spike",
+        "actor": "application"
+      },
+      {
+        "offset_minutes": 12,
+        "description": "Network stabilized, new primary elected",
+        "actor": "mongodb"
+      }
+    ],
+    "lessons_learned": [
+      "Set electionTimeoutMillis appropriately",
+      "Use priority settings to control election winner"
+    ],
+    "canned_telemetry": {
+      "prom": {
+        "mongodb_rs_election_count": {
+          "type": "matrix",
+          "series": [
+            {
+              "labels": {
+                "cluster": "user-db-prod",
+                "rs": "rs0"
+              },
+              "points": [
+                [
+                  1714099200,
+                  "0"
+                ],
+                [
+                  1714099230,
+                  "0"
+                ],
+                [
+                  1714099260,
+                  "0"
+                ],
+                [
+                  1714099290,
+                  "0"
+                ],
+                [
+                  1714099320,
+                  "0"
+                ],
+                [
+                  1714099350,
+                  "5"
+                ],
+                [
+                  1714099380,
+                  "5"
+                ],
+                [
+                  1714099410,
+                  "5"
+                ],
+                [
+                  1714099440,
+                  "5"
+                ],
+                [
+                  1714099470,
+                  "5"
+                ],
+                [
+                  1714099500,
+                  "5"
+                ],
+                [
+                  1714099530,
+                  "5"
+                ],
+                [
+                  1714099560,
+                  "5"
+                ],
+                [
+                  1714099590,
+                  "5"
+                ],
+                [
+                  1714099620,
+                  "5"
+                ],
+                [
+                  1714099650,
+                  "5"
+                ],
+                [
+                  1714099680,
+                  "5"
+                ],
+                [
+                  1714099710,
+                  "5"
+                ],
+                [
+                  1714099740,
+                  "5"
+                ],
+                [
+                  1714099770,
+                  "5"
+                ]
+              ],
+              "trend": "step: 0 → 5 at t=150s (5 elections in 2 min)"
+            }
+          ]
+        },
+        "mongodb_rs_member_state{cluster='user-db-prod'}": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {
+                "cluster": "user-db-prod",
+                "name": "user-db-prod-1:27017",
+                "state": "PRIMARY"
+              },
+              "value": "1"
+            },
+            {
+              "labels": {
+                "cluster": "user-db-prod",
+                "name": "user-db-prod-2:27017",
+                "state": "STEPPED_DOWN"
+              },
+              "value": "9"
+            },
+            {
+              "labels": {
+                "cluster": "user-db-prod",
+                "name": "user-db-prod-3:27017",
+                "state": "SECONDARY"
+              },
+              "value": "2"
+            }
+          ]
+        }
+      },
+      "jumphost": {
+        "mongo-rs-status": {
+          "exit_code": 0,
+          "stdout": "{\"set\": \"rs0\", \"members\": [\n  {\"name\": \"user-db-prod-1:27017\", \"state\": 1, \"stateStr\": \"PRIMARY\", \"electionTime\": \"2026-04-27T09:24:00Z\"},\n  {\"name\": \"user-db-prod-2:27017\", \"state\": 9, \"stateStr\": \"STEPPED_DOWN\", \"lastHeartbeat\": \"2026-04-27T09:23:58Z\"},\n  {\"name\": \"user-db-prod-3:27017\", \"state\": 2, \"stateStr\": \"SECONDARY\"}\n], \"electionId\": \"7234567890abcdef\"}",
+          "duration_ms": 89
+        }
+      }
+    }
+  },
+  {
+    "id": "etcd-disk-latency-001",
+    "name": "etcd Disk I/O Latency Degrading Kubernetes",
+    "source": "Common SRE Scenario",
+    "source_url": null,
+    "tags": [
+      "etcd",
+      "kubernetes",
+      "disk",
+      "latency",
+      "control-plane"
+    ],
+    "difficulty": "Advanced",
+    "input_alerts": [
+      {
+        "source": "prometheus",
+        "title": "etcd disk fsync latency critical",
+        "description": "etcd WAL fsync p99 >500ms",
+        "severity": "critical",
+        "service": "etcd-cluster",
+        "metric_name": "etcd_disk_wal_fsync_duration_seconds",
+        "metric_value": 0.8,
+        "threshold": 0.5,
+        "labels": {
+          "cluster": "k8s-prod"
+        },
+        "delay_secs": null
+      },
+      {
+        "source": "prometheus",
+        "title": "K8s API server latency spike",
+        "description": "kube-apiserver request latency >10s",
+        "severity": "critical",
+        "service": "kube-apiserver",
+        "metric_name": "apiserver_request_duration_seconds",
+        "metric_value": 12.0,
+        "threshold": 5.0,
+        "labels": {},
+        "delay_secs": 60
+      }
+    ],
+    "expected_diagnosis": {
+      "root_cause_category": "performance_degradation",
+      "keywords": [
+        "etcd",
+        "disk",
+        "fsync",
+        "latency",
+        "wal"
+      ],
+      "min_confidence": 0.7,
+      "root_component": "etcd"
+    },
+    "expected_runbook": {
+      "id_pattern": "etcd",
+      "technology": "etcd",
+      "min_steps": 3
+    },
+    "expected_actions": [
+      {
+        "action_type": "diagnostic",
+        "description_keywords": [
+          "etcd",
+          "metrics",
+          "disk"
+        ],
+        "risk_level": "low"
+      },
+      {
+        "action_type": "remediation",
+        "description_keywords": [
+          "compaction",
+          "defrag",
+          "disk"
+        ],
+        "risk_level": "high"
+      }
+    ],
+    "actual_timeline": [
+      {
+        "offset_minutes": 0,
+        "description": "Noisy neighbor VM causes disk I/O contention",
+        "actor": "infrastructure"
+      },
+      {
+        "offset_minutes": 2,
+        "description": "etcd WAL writes slow down",
+        "actor": "etcd"
+      },
+      {
+        "offset_minutes": 5,
+        "description": "K8s control plane becomes unresponsive",
+        "actor": "kubernetes"
+      },
+      {
+        "offset_minutes": 20,
+        "description": "etcd moved to dedicated SSD nodes",
+        "actor": "sre-team"
+      }
+    ],
+    "lessons_learned": [
+      "Run etcd on dedicated SSDs",
+      "Monitor disk fsync latency as a leading indicator"
+    ],
+    "canned_telemetry": {
+      "prom": {
+        "etcd_disk_wal_fsync_duration_seconds{quantile='0.99'}": {
+          "type": "matrix",
+          "series": [
+            {
+              "labels": {
+                "cluster": "k8s-prod",
+                "instance": "etcd-1"
+              },
+              "points": [
+                [
+                  1714099200,
+                  "0.05"
+                ],
+                [
+                  1714099230,
+                  "0.05"
+                ],
+                [
+                  1714099260,
+                  "0.05"
+                ],
+                [
+                  1714099290,
+                  "0.05"
+                ],
+                [
+                  1714099320,
+                  "0.05"
+                ],
+                [
+                  1714099350,
+                  "0.05"
+                ],
+                [
+                  1714099380,
+                  "0.05"
+                ],
+                [
+                  1714099410,
+                  "0.05"
+                ],
+                [
+                  1714099440,
+                  "0.85"
+                ],
+                [
+                  1714099470,
+                  "0.85"
+                ],
+                [
+                  1714099500,
+                  "0.85"
+                ],
+                [
+                  1714099530,
+                  "0.85"
+                ],
+                [
+                  1714099560,
+                  "0.85"
+                ],
+                [
+                  1714099590,
+                  "0.85"
+                ],
+                [
+                  1714099620,
+                  "0.85"
+                ],
+                [
+                  1714099650,
+                  "0.85"
+                ],
+                [
+                  1714099680,
+                  "0.85"
+                ],
+                [
+                  1714099710,
+                  "0.85"
+                ],
+                [
+                  1714099740,
+                  "0.85"
+                ],
+                [
+                  1714099770,
+                  "0.85"
+                ]
+              ],
+              "trend": "spike: 50ms → 850ms at t=240s (17x increase, way over 500ms threshold)"
+            }
+          ]
+        },
+        "apiserver_request_duration_seconds{quantile='0.99'}": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {},
+              "value": "12.3"
+            }
+          ]
+        },
+        "node_disk_io_time_seconds_total{instance=~'etcd.*'}": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {
+                "instance": "etcd-1"
+              },
+              "value": "0.94"
+            },
+            {
+              "labels": {
+                "instance": "etcd-2"
+              },
+              "value": "0.91"
+            },
+            {
+              "labels": {
+                "instance": "etcd-3"
+              },
+              "value": "0.88"
+            }
+          ]
+        }
+      },
+      "jumphost": {
+        "etcd-disk-latency-check": {
+          "exit_code": 0,
+          "stdout": "Storage backend latency p99: 850ms (target: <500ms)\nDB size: 2.3GB / 8GB quota\nLeader: etcd-1\nWAL fsync slow disk warning logged 47 times in last 5 min",
+          "duration_ms": 234
+        }
+      }
+    }
+  },
+  {
+    "id": "dns-resolution-failure-001",
+    "name": "CoreDNS Failure - Cluster-wide DNS Outage",
+    "source": "Common SRE Scenario",
+    "source_url": null,
+    "tags": [
+      "dns",
+      "coredns",
+      "kubernetes",
+      "resolution"
+    ],
+    "difficulty": "Advanced",
+    "input_alerts": [
+      {
+        "source": "prometheus",
+        "title": "CoreDNS resolution failures",
+        "description": "DNS resolution SERVFAIL rate >50%",
+        "severity": "critical",
+        "service": "coredns",
+        "metric_name": "coredns_dns_responses_total",
+        "metric_value": 50.0,
+        "threshold": 5.0,
+        "labels": {
+          "rcode": "SERVFAIL"
+        },
+        "delay_secs": null
+      }
+    ],
+    "expected_diagnosis": {
+      "root_cause_category": "infra_failure",
+      "keywords": [
+        "dns",
+        "coredns",
+        "resolution",
+        "servfail"
+      ],
+      "min_confidence": 0.8,
+      "root_component": "coredns"
+    },
+    "expected_runbook": null,
+    "expected_actions": [
+      {
+        "action_type": "diagnostic",
+        "description_keywords": [
+          "dns",
+          "coredns",
+          "logs"
+        ],
+        "risk_level": "low"
+      },
+      {
+        "action_type": "remediation",
+        "description_keywords": [
+          "restart",
+          "coredns",
+          "cache"
+        ],
+        "risk_level": "high"
+      }
+    ],
+    "actual_timeline": [
+      {
+        "offset_minutes": 0,
+        "description": "CoreDNS ConfigMap update introduces syntax error",
+        "actor": "deployment"
+      },
+      {
+        "offset_minutes": 1,
+        "description": "CoreDNS pods crash-loop",
+        "actor": "kubernetes"
+      },
+      {
+        "offset_minutes": 2,
+        "description": "All inter-service communication fails (DNS-dependent)",
+        "actor": "application"
+      },
+      {
+        "offset_minutes": 8,
+        "description": "ConfigMap reverted, CoreDNS pods recover",
+        "actor": "sre-team"
+      }
+    ],
+    "lessons_learned": [
+      "Validate CoreDNS config before applying",
+      "Have DNS failover mechanism for critical services"
+    ],
+    "canned_telemetry": {
+      "prom": {
+        "coredns_dns_responses_total{rcode='SERVFAIL'}": {
+          "type": "matrix",
+          "series": [
+            {
+              "labels": {
+                "instance": "coredns-1"
+              },
+              "points": [
+                [
+                  1714099200,
+                  "0"
+                ],
+                [
+                  1714099230,
+                  "0"
+                ],
+                [
+                  1714099260,
+                  "0"
+                ],
+                [
+                  1714099290,
+                  "0"
+                ],
+                [
+                  1714099320,
+                  "0"
+                ],
+                [
+                  1714099350,
+                  "0"
+                ],
+                [
+                  1714099380,
+                  "142"
+                ],
+                [
+                  1714099410,
+                  "142"
+                ],
+                [
+                  1714099440,
+                  "142"
+                ],
+                [
+                  1714099470,
+                  "142"
+                ],
+                [
+                  1714099500,
+                  "142"
+                ],
+                [
+                  1714099530,
+                  "142"
+                ],
+                [
+                  1714099560,
+                  "142"
+                ],
+                [
+                  1714099590,
+                  "142"
+                ],
+                [
+                  1714099620,
+                  "142"
+                ],
+                [
+                  1714099650,
+                  "142"
+                ],
+                [
+                  1714099680,
+                  "142"
+                ],
+                [
+                  1714099710,
+                  "142"
+                ],
+                [
+                  1714099740,
+                  "142"
+                ],
+                [
+                  1714099770,
+                  "142"
+                ]
+              ],
+              "trend": "spike: 0/s → 142/s after t=180s"
+            }
+          ]
+        },
+        "coredns_health_request_duration_seconds": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {
+                "instance": "coredns-1"
+              },
+              "value": "5.2"
+            }
+          ]
+        }
+      },
+      "loki": {
+        "{app=\"coredns\"} |~ \"SERVFAIL|i/o timeout\"": {
+          "streams": [
+            {
+              "labels": {
+                "app": "coredns"
+              },
+              "lines": [
+                {
+                  "ts": "2026-04-27T09:23:00Z",
+                  "line": "[ERROR] plugin/errors: 2 backend-api.svc.cluster.local. A: read udp 10.96.0.10:46732->10.96.0.1:53: i/o timeout"
+                },
+                {
+                  "ts": "2026-04-27T09:23:02Z",
+                  "line": "[ERROR] plugin/errors: 2 user-db-prod.svc.cluster.local. A: SERVFAIL"
+                }
+              ],
+              "lines_total": 1247
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "cassandra-gc-pause-001",
+    "name": "Cassandra GC Pause Storm",
+    "source": "Common SRE Scenario",
+    "source_url": null,
+    "tags": [
+      "cassandra",
+      "gc",
+      "jvm",
+      "latency"
+    ],
+    "difficulty": "Intermediate",
+    "input_alerts": [
+      {
+        "source": "prometheus",
+        "title": "Cassandra GC pause exceeds threshold",
+        "description": "Stop-the-world GC pause >5s on cassandra-node-03",
+        "severity": "critical",
+        "service": "cassandra-cluster",
+        "metric_name": "jvm_gc_pause_seconds",
+        "metric_value": 8.5,
+        "threshold": 5.0,
+        "labels": {
+          "instance": "cassandra-03:9042"
+        },
+        "delay_secs": null
+      }
+    ],
+    "expected_diagnosis": {
+      "root_cause_category": "performance_degradation",
+      "keywords": [
+        "gc",
+        "garbage",
+        "heap",
+        "pause",
+        "jvm"
+      ],
+      "min_confidence": 0.6,
+      "root_component": "cassandra"
+    },
+    "expected_runbook": {
+      "id_pattern": "cassandra",
+      "technology": "cassandra",
+      "min_steps": 3
+    },
+    "expected_actions": [
+      {
+        "action_type": "diagnostic",
+        "description_keywords": [
+          "gc",
+          "heap",
+          "nodetool"
+        ],
+        "risk_level": "low"
+      },
+      {
+        "action_type": "remediation",
+        "description_keywords": [
+          "heap",
+          "gc",
+          "tuning"
+        ],
+        "risk_level": "medium"
+      }
+    ],
+    "actual_timeline": [
+      {
+        "offset_minutes": 0,
+        "description": "Compaction triggers large heap allocation",
+        "actor": "cassandra"
+      },
+      {
+        "offset_minutes": 1,
+        "description": "GC pause causes node to be marked down by gossip",
+        "actor": "cassandra"
+      },
+      {
+        "offset_minutes": 3,
+        "description": "Read/write timeouts spike across cluster",
+        "actor": "application"
+      },
+      {
+        "offset_minutes": 15,
+        "description": "Heap size increased, GC tuned to G1GC",
+        "actor": "sre-team"
+      }
+    ],
+    "lessons_learned": [
+      "Use G1GC for large heaps",
+      "Monitor GC frequency and duration proactively"
+    ],
+    "canned_telemetry": {
+      "prom": {
+        "jvm_gc_pause_seconds": {
+          "type": "matrix",
+          "series": [
+            {
+              "labels": {
+                "instance": "cassandra-03:9042",
+                "gc": "G1 Old Generation"
+              },
+              "points": [
+                [
+                  1714099200,
+                  "0.05"
+                ],
+                [
+                  1714099230,
+                  "0.05"
+                ],
+                [
+                  1714099260,
+                  "0.05"
+                ],
+                [
+                  1714099290,
+                  "0.05"
+                ],
+                [
+                  1714099320,
+                  "0.05"
+                ],
+                [
+                  1714099350,
+                  "8.5"
+                ],
+                [
+                  1714099380,
+                  "8.5"
+                ],
+                [
+                  1714099410,
+                  "8.5"
+                ],
+                [
+                  1714099440,
+                  "8.5"
+                ],
+                [
+                  1714099470,
+                  "8.5"
+                ],
+                [
+                  1714099500,
+                  "8.5"
+                ],
+                [
+                  1714099530,
+                  "8.5"
+                ],
+                [
+                  1714099560,
+                  "8.5"
+                ],
+                [
+                  1714099590,
+                  "8.5"
+                ],
+                [
+                  1714099620,
+                  "8.5"
+                ],
+                [
+                  1714099650,
+                  "8.5"
+                ],
+                [
+                  1714099680,
+                  "8.5"
+                ],
+                [
+                  1714099710,
+                  "8.5"
+                ],
+                [
+                  1714099740,
+                  "8.5"
+                ],
+                [
+                  1714099770,
+                  "8.5"
+                ]
+              ],
+              "trend": "spike: 50ms → 8.5s pause (170x increase)"
+            }
+          ]
+        },
+        "jvm_memory_used_bytes{area='heap',instance='cassandra-03:9042'}": {
+          "type": "vector",
+          "samples": [
+            {
+              "labels": {
+                "instance": "cassandra-03:9042"
+              },
+              "value": "33285996544"
+            }
+          ]
+        }
+      },
+      "jumphost": {
+        "nodetool-gcstats": {
+          "exit_code": 0,
+          "stdout": "Mode: G1\nMax pause time goal: 200ms\nLast pause: 8534ms (G1 Old Generation, evacuation)\nHeap: 31.2GB / 32GB used (97%)\nObject pinning detected on compaction subpool\nRecommended: increase heap to 48GB OR move to G1GC with concurrent marking",
+          "duration_ms": 567
+        }
+      }
+    }
+  }
+]

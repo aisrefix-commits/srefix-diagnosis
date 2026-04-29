@@ -1,0 +1,56 @@
+[project]
+name = "srefix-discovery-mcp"
+version = "0.1.0"
+description = "MCP server for auto-discovering clusters across CMDB / cloud / orchestration sources"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+kubernetes = ["kubernetes>=29.0"]
+zookeeper = ["kazoo>=2.10"]
+aws = ["boto3>=1.34"]
+gcp = ["google-api-python-client>=2.100", "google-cloud-spanner>=3.0", "google-cloud-bigquery>=3.0"]
+azure = ["azure-identity>=1.15", "azure-mgmt-rdbms>=10.1", "azure-mgmt-sql>=4.0",
+         "azure-mgmt-redis>=14.3", "azure-mgmt-cosmosdb>=9.5",
+         "azure-mgmt-eventhub>=11.0", "azure-mgmt-hdinsight>=9.0"]
+aliyun = ["aliyun-python-sdk-core>=2.13", "aliyun-python-sdk-rds>=2.6",
+          "aliyun-python-sdk-r-kvstore>=2.20", "aliyun-python-sdk-dds>=3.0"]
+tencentcloud = ["tencentcloud-sdk-python>=3.0"]
+huaweicloud = ["huaweicloudsdkcore>=3.1", "huaweicloudsdkrds>=3.1",
+               "huaweicloudsdkdcs>=3.1", "huaweicloudsdkdds>=3.1",
+               "huaweicloudsdkkafka>=3.1", "huaweicloudsdkmrs>=3.1"]
+jdcloud = ["jdcloud-sdk>=1.7"]
+volcengine = ["volcengine-python-sdk>=1.0"]
+# Vercel / Fly.io / Railway / Heroku use plain HTTP (requests already in core deps)
+redis-cluster = ["redis>=5.0"]
+mongo = ["pymongo>=4.0"]
+cassandra = ["cassandra-driver>=3.28"]
+all = [
+    "kubernetes>=29.0", "kazoo>=2.10",
+    "boto3>=1.34",
+    "google-api-python-client>=2.100", "google-cloud-spanner>=3.0", "google-cloud-bigquery>=3.0",
+    "azure-identity>=1.15", "azure-mgmt-rdbms>=10.1", "azure-mgmt-sql>=4.0",
+    "azure-mgmt-redis>=14.3", "azure-mgmt-cosmosdb>=9.5",
+    "azure-mgmt-eventhub>=11.0", "azure-mgmt-hdinsight>=9.0",
+    "aliyun-python-sdk-core>=2.13", "aliyun-python-sdk-rds>=2.6",
+    "aliyun-python-sdk-r-kvstore>=2.20", "aliyun-python-sdk-dds>=3.0",
+    "tencentcloud-sdk-python>=3.0",
+    "huaweicloudsdkcore>=3.1", "huaweicloudsdkrds>=3.1",
+    "huaweicloudsdkdcs>=3.1", "huaweicloudsdkdds>=3.1",
+    "huaweicloudsdkkafka>=3.1", "huaweicloudsdkmrs>=3.1",
+    "jdcloud-sdk>=1.7", "volcengine-python-sdk>=1.0",
+    "redis>=5.0", "pymongo>=4.0", "cassandra-driver>=3.28",
+]
+
+[project.scripts]
+srefix-discovery = "srefix_discovery_mcp.server:run"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]

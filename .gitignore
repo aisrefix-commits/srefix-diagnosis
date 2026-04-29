@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+
+# Virtual env
+.venv/
+venv/
+env/
+ENV/
+
+# Test / cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local env config (never commit secrets)
+.env
+.env.*
+!.env.example
+*.secret
+*.pem
+*.key
+credentials*.json
+
+# Local Claude config (per-user)
+.claude/
+
+# Note: mcp/claude_mcp_config.json is committed (users copy chunks from it).
+# Re-generate via `python3 mcp/generate.py` after editing the tech list.
